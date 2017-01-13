@@ -1,0 +1,74 @@
+<link rel="import" href="{$components_url}bower_components/paper-button/paper-button.html">
+<link rel="import" href="{$components_url}bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="{$components_url}bower_components/iron-icons/notification-icons.html">
+
+
+<style is="custom-style">
+    paper-button.custom {
+        --paper-button-ink-color: var(--paper-pink-a200);
+        /* These could also be individually defined for each of the
+          specific css classes, but we'll just do it once as an example */
+        --paper-button-flat-keyboard-focus: {
+            background-color: var(--paper-pink-a200);
+            color: white !important;
+        };
+        --paper-button-raised-keyboard-focus: {
+            background-color: var(--paper-pink-a200) !important;
+            color: white !important;
+        };
+    }
+    paper-button.custom:hover {
+        background-color: var(--paper-indigo-100);
+    }
+    paper-button.pink {
+        color: var(--paper-pink-a200);
+
+    }
+    paper-button.indigo {
+        background-color: var(--paper-indigo-500);
+        color: white;
+        --paper-button-raised-keyboard-focus: {
+            background-color: var(--paper-pink-a200) !important;
+            color: white !important;
+        };
+    }
+    paper-button.green {
+        background-color: var(--paper-green-500);
+        color: white;
+    }
+    paper-button.green[active] {
+        background-color: var(--paper-red-500);
+    }
+
+    paper-button {
+        margin: 20px;
+    }
+
+    paper-progress {
+        width: inherit;
+    }
+
+</style>
+
+<h4 class="ow_center">Knowledge's level</h4>
+<paper-progress value="6" min="1" max="10"></paper-progress>
+
+{if $flag==true}
+
+<h4 class="ow_center">Today's challenges</h4>
+
+<paper-button raised class="custom green" onclick="SPODTUTORIAL.showFloatBox({$firstChallengeId});"><iron-icon icon="notification:event-available"></iron-icon>{$firstChallengeId}</paper-button>
+<paper-button raised class="custom green" onclick="SPODTUTORIAL.showFloatBox({$secondChallengeId});"><iron-icon icon="notification:event-available"></iron-icon>{$secondChallengeId}</paper-button>
+<paper-button raised class="custom green" onclick="SPODTUTORIAL.showFloatBox({$thirdChallengeId});"><iron-icon icon="notification:event-available"></iron-icon>{$thirdChallengeId}</paper-button>
+<paper-button raised class="custom green" onclick="SPODTUTORIAL.showFloatBox({$fourthChallengeId});"><iron-icon icon="notification:event-available"></iron-icon>{$fourthChallengeId}</paper-button>
+<paper-button raised class="custom green" onclick="SPODTUTORIAL.showFloatBox({$fifthChallengeId});"><iron-icon icon="notification:event-available"></iron-icon>{$fifthChallengeId}</paper-button>
+{/if}
+
+<p id="result"></p>
+
+<script>
+    function showStr(stringa) {
+        result =  document.getElementById('result');
+        result.innerHTML = stringa;
+    }
+</script>

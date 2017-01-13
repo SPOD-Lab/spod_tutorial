@@ -1,0 +1,21 @@
+<link rel="import" href="{$components_url}bower_components/paper-button/paper-button.html">
+<link rel="import" href="{$components_url}bower_components/paper-card/paper-card.html">
+
+<style is="custom-style">
+    paper-card {
+        --paper-card-header: {
+        background-color: #1dc116;
+        };
+    }
+
+</style>
+
+<paper-card heading="{$title}">
+    <div class="card-content">
+        {$body}
+    </div>
+    <div class="card-actions">
+        <paper-button>Try it!</paper-button>
+        <paper-button>More info</paper-button>
+    </div>
+</paper-card>
