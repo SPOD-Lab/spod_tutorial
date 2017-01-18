@@ -8,8 +8,15 @@
  */
 class SPODTUTORIAL_CTRL_AjaxChallenge extends OW_ActionController
 {
-    public function showAbout() {
-        echo "prova";
+    public function updateProgress() {
+        exit;
+    }
+
+    public function initChallenge() {
+        exit;
+    }
+
+    public function verifySuccess() {
         exit;
     }
 }

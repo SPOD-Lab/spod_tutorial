@@ -1,12 +1,13 @@
 SPODTUTORIAL = {};
 
-SPODTUTORIAL.showAbout = function ()
+SPODTUTORIAL.updateProgress = function ()
 {
     $.ajax({
         type: 'post',
-        url: SPODTUTORIAL.ajax_show_about,
-        success: function(stringa){
-            showStr(stringa);
+        url: SPODTUTORIAL.ajax_update_progress,
+        success: function(){
+            updateProgress();
+            previewFloatBox.close();
         }
     });
 

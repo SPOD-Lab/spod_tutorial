@@ -15,8 +15,16 @@ class SPODTUTORIAL_CMP_InfoBox extends OW_Component
         $example->andFieldEqual('id',$id);
         $challenge = SPODTUTORIAL_BOL_ChallengeDao::getInstance()->findObjectByExample($example);
 
-        $this->assign('title', $challenge->title);
-        $this->assign('body',$challenge->body);
+        $this->assign('title', OW::getLanguage()->text('spodtutorial',$challenge->title));
+        $this->assign('body',OW::getLanguage()->text('spodtutorial',$challenge->body));
         $this->assign('components_url', SPODPR_COMPONENTS_URL);
+
+        $js = '$("#try_button").click(SPODTUTORIAL.updateProgress);
+
+        $("#close_button").click(function(){
+            previewFloatBox.close()
+        });
+        ';
+        OW::getDocument()->addOnloadScript($js);
     }
 }

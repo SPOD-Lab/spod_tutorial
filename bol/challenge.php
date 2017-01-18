@@ -13,4 +13,6 @@ class SPODTUTORIAL_BOL_Challenge extends OW_Entity
     public $title;
 
     public $body;
+
+    public $dependencies;
 }

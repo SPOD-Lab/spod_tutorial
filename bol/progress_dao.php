@@ -6,7 +6,7 @@
  * Date: 12/01/2017
  * Time: 10:00
  */
-class SPODTUTORIAL_BOL_AssignedChallengesDao extends OW_BaseDao
+class SPODTUTORIAL_BOL_ProgressDao extends OW_BaseDao
 {
     /**
      * Constructor.
@@ -19,14 +19,14 @@ class SPODTUTORIAL_BOL_AssignedChallengesDao extends OW_BaseDao
     /**
      * Singleton instance.
      *
-     * @var SPODTUTORIAL_BOL_AssignedChallengesDao
+     * @var SPODTUTORIAL_BOL_ProgressDao
      */
     private static $classInstance;
 
     /**
      * Returns an instance of class (singleton pattern implementation).
      *
-     * @return SPODTUTORIAL_BOL_AssignedChallengesDao
+     * @return SPODTUTORIAL_BOL_ProgressDao
      */
     public static function getInstance()
     {
@@ -44,7 +44,7 @@ class SPODTUTORIAL_BOL_AssignedChallengesDao extends OW_BaseDao
      */
     public function getDtoClassName()
     {
-        return 'SPODTUTORIAL_BOL_AssignedChallenges';
+        return 'SPODTUTORIAL_BOL_Progress';
     }
 
     /**
@@ -53,7 +53,7 @@ class SPODTUTORIAL_BOL_AssignedChallengesDao extends OW_BaseDao
      */
     public function getTableName()
     {
-        return OW_DB_PREFIX . 'spodtutorial_assigned_challenges';
+        return OW_DB_PREFIX . 'spodtutorial_progress';
     }
 
 }

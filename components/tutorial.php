@@ -8,8 +8,8 @@
  */
 class SPODTUTORIAL_CMP_Tutorial extends  BASE_CLASS_Widget
 {
-    private $assignedChallengesService;
-    private $assignedChallenges;
+    private $progressService;
+    private $progress;
     private $userId;
     private $challenges;
     private $progressbar;
@@ -19,33 +19,34 @@ class SPODTUTORIAL_CMP_Tutorial extends  BASE_CLASS_Widget
         parent::__construct();
         $this->challenges = SPODTUTORIAL_BOL_ChallengeDao::getInstance()->findAll();
 
-        $this->assignedChallengesService = SPODTUTORIAL_BOL_AssignedChallengesService::getInstance();
-        $this->userId =  $paramObject->additionalParamList['entityId'];
+        $this->progressService = SPODTUTORIAL_BOL_ProgressService::getInstance();
+        $this->userId =  $paramObject->additionalParamList['entityId'] != null ? $paramObject->additionalParamList['entityId'] : OW::getUser()->getId();
 
         if($this->userId == OW::getUser()->getId()) {
-            $this->assignedChallenges = $this->assignedChallengesService->findByUserId($this->userId);
+            $this->progress = $this->progressService->findByUserId($this->userId);
+            //var_dump($this->progress);die();
 
-            if($this->assignedChallenges == null) {
-                $randChallengesIdInArray = array_rand($this->challenges,5);
+            if($this->progress == null || (time()-strtotime($this->progress->timestamp)) > 82800 ) {
+                $randChallengesIdInArray = array_rand($this->challenges,2);
                 $randChallengesId = array(
                     $this->challenges[$randChallengesIdInArray[0]]->id,
-                    $this->challenges[$randChallengesIdInArray[1]]->id,
-                    $this->challenges[$randChallengesIdInArray[2]]->id,
-                    $this->challenges[$randChallengesIdInArray[3]]->id,
-                    $this->challenges[$randChallengesIdInArray[4]]->id
-
+                    $this->challenges[$randChallengesIdInArray[1]]->id
                 );
-                $this->assignedChallengesService->assign($this->userId,$randChallengesId);
-                $this->assignedChallenges = $this->assignedChallengesService->findByUserId($this->userId);
+                $this->progressService->assign($this->userId,$randChallengesId);
+                $this->progress = $this->progressService->findByUserId($this->userId);
             }
         }
 
+        $this->progressbar = count($this->progress->passedChallengesId);
+
         OW::getDocument()->addScript(OW::getPluginManager()->getPlugin('spodtutorial')->getStaticJsUrl() . 'challenge.js', 'text/javascript');
-        /*$js = UTIL_JsGenerator::composeJsString('
-                SPODTUTORIAL.ajax_show_about = {$ajax_show_about}
+        $script = UTIL_JsGenerator::composeJsString('
+                SPODTUTORIAL.ajax_update_progress = {$ajax_update_progress}
             ', array(
-            'ajax_show_about' => OW::getRouter()->urlFor('SPODTUTORIAL_CTRL_AjaxChallenge', 'showAbout')
-        ));*/
+            'ajax_update_progress' => OW::getRouter()->urlFor('SPODTUTORIAL_CTRL_AjaxChallenge', 'updateProgress')
+        ));
+        OW::getDocument()->addOnloadScript($script);
+
         $js = "
 SPODTUTORIAL.showFloatBox = function (id)
 {
@@ -70,14 +71,13 @@ SPODTUTORIAL.showFloatBox = function (id)
     public function onBeforeRender()
     {
         $this->assign('components_url', SPOD_COMPONENTS_URL);
+        $this->assign('value',$this->progressbar);
+        $this->assign('count',count($this->challenges));
         $this->assign('flag',true);
 
         if($this->userId == OW::getUser()->getId()) {
-            $this->assign('firstChallengeId',$this->assignedChallenges->firstChallengeId);
-            $this->assign('secondChallengeId',$this->assignedChallenges->secondChallengeId);
-            $this->assign('thirdChallengeId',$this->assignedChallenges->thirdChallengeId);
-            $this->assign('fourthChallengeId',$this->assignedChallenges->fourthChallengeId);
-            $this->assign('fifthChallengeId',$this->assignedChallenges->fifthChallengeId);
+            $this->assign('firstChallengeId',json_decode($this->progress->assignedChallengesId)[0]);
+            $this->assign('secondChallengeId',json_decode($this->progress->assignedChallengesId)[1]);
         }
         else{
             $this->assign('flag',false);
