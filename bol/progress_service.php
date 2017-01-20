@@ -60,16 +60,28 @@ class SPODTUTORIAL_BOL_ProgressService
      */
     public function assign( $userId, $idList )
     {
-        if($this->findByUserId($userId) != null)
+        if($this->findByUserId($userId) != null) {
             $progress = $this->findByUserId($userId);
+        }
         else
             $progress = new SPODTUTORIAL_BOL_Progress();
 
         $progress->userId = $userId;
         $progress->assignedChallengesId = json_encode($idList);
         $progress->timestamp = date('Y-m-d',time());
+        $this->progressDao->save($progress);
+        return $progress;
+    }
 
-        //OW::getFeedback()->info("Hai nuove challenges!!!");
-        return $this->progressDao->save($progress);
+    public function pass( $userId, $id) {
+        if($this->findByUserId($userId) != null) {
+            $progress = $this->findByUserId($userId);
+            $temp = json_decode($progress->passedChallengesId);
+            if(!in_array("".$id,$temp)) {
+                $temp[] = "".$id;
+                $progress->passedChallengesId = json_encode($temp);
+                SPODTUTORIAL_BOL_ProgressDao::getInstance()->save($progress);
+            }
+        }
     }
 }

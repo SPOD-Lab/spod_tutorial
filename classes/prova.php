@@ -6,9 +6,6 @@
  * Time: 15:07
  */
 
-$time = strtotime('2017-01-17 15:23:25');
-
-$curtime = time();
-
-
-echo date('Y-m-d',$time);
+$temp = json_decode('["1","2"]');
+$temp[] = "1";
+echo json_encode($temp);

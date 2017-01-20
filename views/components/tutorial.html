@@ -57,8 +57,9 @@
 
 <h4 class="ow_center">Today's challenges</h4>
 
-<paper-button raised class="custom green" onclick="SPODTUTORIAL.showFloatBox({$firstChallengeId});"><iron-icon icon="notification:event-available"></iron-icon></paper-button>
-<paper-button raised class="custom green" onclick="SPODTUTORIAL.showFloatBox({$secondChallengeId});"><iron-icon icon="notification:event-available"></iron-icon></paper-button>
+{foreach $challengesId as $challengeId}
+<paper-button raised class="custom green" onclick="SPODTUTORIAL.showFloatBox({$challengeId});" alt><iron-icon icon="notification:event-available"></iron-icon></paper-button>
+{/foreach}
 {/if}
 
 <p id="result"></p>
@@ -66,6 +67,5 @@
 <script>
     function updateProgress() {
         result =  document.getElementById('progress');
-        progress.value += 1;
     }
 </script>
