@@ -13,9 +13,9 @@ class SPODTUTORIAL_CMP_Detail extends OW_Component
         $userId = (int) $params['userId'];
         $passedChallengesId = json_decode(SPODTUTORIAL_BOL_ProgressService::getInstance()->findByUserId($userId)->passedChallengesId);
         $challenges = SPODTUTORIAL_BOL_ChallengeDao::getInstance()->findByIdList($passedChallengesId);
+        $this->assign('challenges',$challenges);
 
         $this->assign('components_url', SPODPR_COMPONENTS_URL);
-        $this->assign('challenges',$challenges);
         $this->assign('prefix','spodtutorial+');
     }
 }

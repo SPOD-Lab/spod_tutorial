@@ -1,5 +1,6 @@
 <link rel="import" href="{$components_url}bower_components/paper-card/paper-card.html">
 
+{if $challenges}
 {foreach $challenges as $challenge}
 
 <style is="custom-style">
@@ -16,3 +17,6 @@
     <div class="card-content">{text key=$prefix|cat:$challenge->body}</div>
 </paper-card>
 {/foreach}
+{else}
+<h3>No Challenges passed</h3>
+{/if}

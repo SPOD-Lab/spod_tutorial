@@ -86,4 +86,18 @@ class SPODTUTORIAL_BOL_ProgressService
         }
         return false;
     }
+
+    public function initDb() {
+        $users = BOL_UserDao::getInstance()->findAll();
+        foreach ($users as $user) {
+            if($this->findByUserId($user->id) == null){
+                $progress = new SPODTUTORIAL_BOL_Progress();
+                $progress->userId = $user->id;
+                $progress->passedChallengesId = '[]';
+                $progress->assignedChallengesId = '[]';
+                $progress->timestamp = '2000-01-01 00:00:00';
+                $this->progressDao->save($progress);
+            }
+        }
+    }
 }

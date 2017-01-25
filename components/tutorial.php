@@ -29,6 +29,7 @@ class SPODTUTORIAL_CMP_Tutorial extends  BASE_CLASS_Widget
         $this->userId =  $paramObject->additionalParamList['entityId'] != null ? $paramObject->additionalParamList['entityId'] : OW::getUser()->getId();
 
         $this->progress = $this->progressService->findByUserId($this->userId);
+        $this->newPassed = 0;
 
         if($this->userId == OW::getUser()->getId()) {
 
@@ -57,9 +58,9 @@ class SPODTUTORIAL_CMP_Tutorial extends  BASE_CLASS_Widget
                 $this->progress = $this->progressService->assign($this->userId,$randChallengesId);
                 OW::getFeedback()->info(OW::getLanguage()->text('spodtutorial','new_challenge'));
             }
+            $this->newPassed = SPODTUTORIAL_CLASS_Checker::getInstance()->checkChallenges($this->userId);
         }
 
-        $this->newPassed = SPODTUTORIAL_CLASS_Checker::getInstance()->checkChallenges($this->userId);
         $this->progress = $this->progressService->findByUserId($this->userId);
         $passedChallengesId = json_decode($this->progress->passedChallengesId);
         $this->progressbar = count($passedChallengesId);
