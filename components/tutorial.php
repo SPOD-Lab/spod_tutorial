@@ -15,6 +15,8 @@ class SPODTUTORIAL_CMP_Tutorial extends  BASE_CLASS_Widget
     private $challengesId;
     private $progressbar;
     private $util;
+    private $newPassed;
+    private $reputationRecord;
 
     public function __construct(BASE_CLASS_WidgetParameter $paramObject)
     {
@@ -30,8 +32,10 @@ class SPODTUTORIAL_CMP_Tutorial extends  BASE_CLASS_Widget
 
         if($this->userId == OW::getUser()->getId()) {
 
-            if($this->progress == null) { //non esistono challenge per l'utente
-                $randChallengesKeyOfArray = array_rand($this->challenges,2); //cambiando il valore numerico posso scegliere più challenge
+            if($this->progress == null) { //user doesn't have challenges
+                $temp = $this->util->checkDependencies($this->challenges,array());
+
+                $randChallengesKeyOfArray = array_rand($temp!=null?$temp:$this->challenges,2); //changing the integer value you can get more or less challenges
                 $randChallengesId = array();
                 foreach ($randChallengesKeyOfArray as $key) {
                     $randChallengesId[] = $this->challenges[$key]->id;
@@ -39,16 +43,13 @@ class SPODTUTORIAL_CMP_Tutorial extends  BASE_CLASS_Widget
                 $this->progress = $this->progressService->assign($this->userId,$randChallengesId);
                 OW::getFeedback()->info(OW::getLanguage()->text('spodtutorial','new_challenge'));
             }
-            elseif ((time()-strtotime($this->progress->timestamp)) > 82800 ) { //in questo caso aggiorno le daily challenge
-                //prendo id delle challenge superate dall'utente
+            elseif ((time()-strtotime($this->progress->timestamp)) > 82800 ) { //in this case I only update daily challenges
+                //taking the id of the user's passed challenges
                 $passed = json_decode($this->progress->passedChallengesId);
 
-                //prendo id e poi le challenge corrispondenti rimanenti per l'utente
-                $remained = array_diff($this->challengesId,$passed);
-                $remainedChallenges = SPODTUTORIAL_BOL_ChallengeDao::getInstance()->findByIdList($remained);
-                $temp = $this->util->checkDependencies($remainedChallenges,$passed);
+                $temp = $this->util->checkDependencies($this->challenges,$passed);
 
-                $randChallengesKeyOfArray = array_rand($remainedChallenges!=null?$remainedChallenges:$this->challenges,2); //cambiando il valore numerico posso scegliere più challenge
+                $randChallengesKeyOfArray = array_rand($temp!=null?$temp:$this->challenges,2); //changing the integer value you can get more or less challenges
                 $randChallengesId = array();
                 foreach ($randChallengesKeyOfArray as $key) {
                     $randChallengesId[] = $this->challenges[$key]->id;
@@ -58,20 +59,18 @@ class SPODTUTORIAL_CMP_Tutorial extends  BASE_CLASS_Widget
             }
         }
 
-        SPODTUTORIAL_CLASS_Checker::getInstance()->checkDatalets($this->userId);
-
+        $this->newPassed = SPODTUTORIAL_CLASS_Checker::getInstance()->checkChallenges($this->userId);
         $this->progress = $this->progressService->findByUserId($this->userId);
-        $this->progressbar = count(json_decode($this->progress->passedChallengesId));
+        $passedChallengesId = json_decode($this->progress->passedChallengesId);
+        $this->progressbar = count($passedChallengesId);
 
         OW::getDocument()->addScript(OW::getPluginManager()->getPlugin('spodtutorial')->getStaticJsUrl() . 'challenge.js', 'text/javascript');
-        $script = UTIL_JsGenerator::composeJsString('
-                SPODTUTORIAL.ajax_update_progress = {$ajax_update_progress}
-            ', array(
-            'ajax_update_progress' => OW::getRouter()->urlFor('SPODTUTORIAL_CTRL_AjaxChallenge', 'updateProgress')
-        ));
-        OW::getDocument()->addOnloadScript($script);
-
         $js = "
+SPODTUTORIAL.showPassedChallenges = function(userId) {
+    var params = {userId:userId};
+    detailFloatBox = OW.ajaxFloatBox('SPODTUTORIAL_CMP_Detail', {userId:params} , {width: '50%', iconClass: 'ow_ic_add', title: '".OW::getLanguage()->text('spodtutorial','detail_title')."'});
+};
+
 SPODTUTORIAL.showFloatBox = function (id)
 {
     var params = {id:id};
@@ -95,12 +94,28 @@ SPODTUTORIAL.showFloatBox = function (id)
     public function onBeforeRender()
     {
         $this->assign('components_url', SPOD_COMPONENTS_URL);
+        $this->assign('prefix','spodtutorial+');
+        $this->assign('userId',$this->userId);
         $this->assign('value',$this->progressbar);
         $this->assign('count',count($this->challenges));
+        $this->assign('newPassed',$this->newPassed);
         $this->assign('flag',true);
+        $this->assign('level','Beginner');
 
         if($this->userId == OW::getUser()->getId()) {
-            $this->assign('challengesId',json_decode($this->progress->assignedChallengesId));
+            $assignedChallenges = SPODTUTORIAL_BOL_ChallengeDao::getInstance()->findByIdList(json_decode($this->progress->assignedChallengesId));
+            $this->assign('challenges',$assignedChallenges);
+            //check if assigned challenges have already been passed by the user
+            $colors = array();
+            foreach (json_decode($this->progress->assignedChallengesId) as $assignedChallengeId) {
+                if(in_array($assignedChallengeId,json_decode($this->progress->passedChallengesId))) {
+                    $colors[$assignedChallengeId] = "red";
+                }
+                else {
+                    $colors[$assignedChallengeId] = "green";
+                }
+            }
+            $this->assign('colors',$colors);
         }
         else{
             $this->assign('flag',false);

@@ -1,6 +1,8 @@
 <link rel="import" href="{$components_url}bower_components/paper-button/paper-button.html">
 <link rel="import" href="{$components_url}bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="{$components_url}bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="{$components_url}bower_components/paper-badge/paper-badge.html">
+<link rel="import" href="{$components_url}bower_components/paper-toolbar/paper-toolbar.html">
 
 
 <style is="custom-style">
@@ -20,23 +22,20 @@
     paper-button.custom:hover {
         background-color: var(--paper-indigo-100);
     }
-    paper-button.pink {
-        color: var(--paper-pink-a200);
 
-    }
-    paper-button.indigo {
-        background-color: var(--paper-indigo-500);
-        color: white;
-        --paper-button-raised-keyboard-focus: {
-            background-color: var(--paper-pink-a200) !important;
-            color: white !important;
-        };
-    }
     paper-button.green {
         background-color: var(--paper-green-500);
         color: white;
     }
     paper-button.green[active] {
+        background-color: var(--paper-green-500);
+    }
+
+    paper-button.red {
+        background-color: var(--paper-red-500);
+        color: white;
+    }
+    paper-button.red[active] {
         background-color: var(--paper-red-500);
     }
 
@@ -48,24 +47,34 @@
         width: inherit;
     }
 
+    paper-badge {
+        --paper-badge-background: var(--paper-red-300);
+        cursor: pointer;
+    }
+
+    .info {
+        cursor: help;
+    }
+
 </style>
 
-<h4 class="ow_center">Knowledge's level</h4>
+<h4 class="ow_center info" id="level" onclick="SPODTUTORIAL.showPassedChallenges({$userId})">Knowledge's level</h4>
+<paper-badge for="level" label="{$newPassed}" onclick="SPODTUTORIAL.showPassedChallenges({$userId})" {if $newPassed eq 0} hidden {/if}></paper-badge>
+
+{if $value < $count}
 <paper-progress id="progress" value="{$value}" min="0" max="{$count}"></paper-progress>
+
+{else}
+<paper-toolbar>
+    <span class="title">{$level}</span>
+</paper-toolbar>
+{/if}
 
 {if $flag==true}
 
 <h4 class="ow_center">Today's challenges</h4>
 
-{foreach $challengesId as $challengeId}
-<paper-button raised class="custom green" onclick="SPODTUTORIAL.showFloatBox({$challengeId});" alt><iron-icon icon="notification:event-available"></iron-icon></paper-button>
+{foreach $challenges as $challenge}
+<paper-button raised class="custom {$colors[$challenge->id]}" onclick="SPODTUTORIAL.showFloatBox({$challenge->id});" alt><iron-icon icon="notification:event-available"></iron-icon>{text key=$prefix|cat:$challenge->title}</paper-button>
 {/foreach}
 {/if}
-
-<p id="result"></p>
-
-<script>
-    function updateProgress() {
-        result =  document.getElementById('progress');
-    }
-</script>

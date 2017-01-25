@@ -6,11 +6,8 @@
  * Time: 11:28
  */
 
-$path = OW::getPluginManager()->getPlugin('spodtutorial')->getRootDir() . 'langs.zip';
-BOL_LanguageService::getInstance()->importPrefixFromZip($path, 'spodtutorial');
-
-/*BOL_LanguageService::getInstance()->addPrefix('spodtutorial', 'SPOD Tutorial');
-OW::getLanguage()->importPluginLangs(OW::getPluginManager()->getPlugin('spodtutorial')->getRootDir().'langs.zip', 'spodtutorial');*/
+BOL_LanguageService::getInstance()->addPrefix('spodtutorial', 'SPOD Tutorial');
+OW::getLanguage()->importPluginLangs(OW::getPluginManager()->getPlugin('spodtutorial')->getRootDir().'langs.zip', 'spodtutorial');
 
 $sql = 'CREATE TABLE IF NOT EXISTS `' . OW_DB_PREFIX . 'spodtutorial_progress` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -44,7 +41,7 @@ OW::getDbo()->query(
 (7, "map_title", "map_body", ""),
 (8, "copy_title", "copy_body", ""),
 (9, "reuse_title", "reuse_body", "8"),
-(10, "export_title", "export_body", ""),
+(10, "agora_title", "agora_body", ""),
 (11, "new_link_title", "new_link_body", ""),
 (12, "reuse_link_title", "reuse_link_body", "11"),
 (13, "attach_title", "attach_body", ""),

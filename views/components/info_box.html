@@ -1,5 +1,7 @@
 <link rel="import" href="{$components_url}bower_components/paper-button/paper-button.html">
 <link rel="import" href="{$components_url}bower_components/paper-card/paper-card.html">
+<link rel="import" href="{$components_url}bower_components/paper-material/paper-material.html">
+
 
 <style is="custom-style">
     paper-card {
@@ -11,12 +13,18 @@
 
 </style>
 
+{if $staticResourcesUrl}
+<img src="{$staticResourcesUrl}images/challenge_{$id}.png" style="width: 60%; height: 60%;">
+{else}
 <paper-card heading="{$title}">
     <div class="card-content">
         <h5 class="ow_center">{$body}</h5>
     </div>
     <div class="card-actions">
-        <paper-button id="try_button">Try it!</paper-button>
+        <paper-button id="try_button" onclick="SPODTUTORIAL.showHint({$id});">How can I do It?</paper-button>
         <paper-button id="close_button">Close</paper-button>
     </div>
 </paper-card>
+
+{/if}
+

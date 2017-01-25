@@ -78,10 +78,12 @@ class SPODTUTORIAL_BOL_ProgressService
             $progress = $this->findByUserId($userId);
             $temp = json_decode($progress->passedChallengesId);
             if(!in_array("".$id,$temp)) {
-                $temp[] = "".$id;
+                $temp[] = "" . $id;
                 $progress->passedChallengesId = json_encode($temp);
                 SPODTUTORIAL_BOL_ProgressDao::getInstance()->save($progress);
+                return true;
             }
         }
+        return false;
     }
 }
