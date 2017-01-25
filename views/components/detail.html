@@ -1,0 +1,18 @@
+<link rel="import" href="{$components_url}bower_components/paper-card/paper-card.html">
+
+{foreach $challenges as $challenge}
+
+<style is="custom-style">
+    paper-card {
+        --paper-card-header: {
+        background-color: #00ff00;
+    };
+    margin: 10px;
+    }
+
+</style>
+
+<paper-card heading="{text key=$prefix|cat:$challenge->title}">
+    <div class="card-content">{text key=$prefix|cat:$challenge->body}</div>
+</paper-card>
+{/foreach}
