@@ -102,6 +102,11 @@ SPODTUTORIAL.showFloatBox = function (id)
 
     }
 
+    public static function getAccess() // If you redefine this method, you'll be able to manage the widget visibility
+    {
+        return self::ACCESS_MEMBER;
+    }
+
     public function onBeforeRender()
     {
         $this->assign('components_url', SPOD_COMPONENTS_URL);
