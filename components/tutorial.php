@@ -28,7 +28,8 @@ class SPODTUTORIAL_CMP_Tutorial extends  BASE_CLASS_Widget
         $this->progressService = SPODTUTORIAL_BOL_ProgressService::getInstance();
         $this->userId =  $paramObject->additionalParamList['entityId'] != null ? $paramObject->additionalParamList['entityId'] : OW::getUser()->getId();
 
-        if(OW::getPluginManager()->isPluginActive('spodreputation')) {
+        /* In the following code it's possible to change the interaction between this plugin and SPOD Reputation plugin
+         if(OW::getPluginManager()->isPluginActive('spodreputation')) {
             $this->reputationRecord = SPODREPUTATION_BOL_Service::getInstance()->findByUserId($this->userId);
             $this->assign('level',$this->reputationRecord->level);
             $this->assign('toolbarColor',SPODREPUTATION_CLASS_Evaluation::getInstance()->setLevelColor($this->reputationRecord->level));
@@ -37,6 +38,10 @@ class SPODTUTORIAL_CMP_Tutorial extends  BASE_CLASS_Widget
             $this->assign('toolbarColor','#0099ff');
             $this->assign('level','Beginner');
         }
+        */
+
+        $this->assign('toolbarColor','#0099ff');
+        $this->assign('level',OW::getLanguage()->text('spodtutorial','completed'));
 
         $this->progress = $this->progressService->findByUserId($this->userId);
         $this->newPassed = 0;
