@@ -138,7 +138,7 @@ class SPODTUTORIAL_CLASS_Checker {
     }
 
     /**
-     * Challeneges checked by this method: 11
+     * Challeneges checked by this method: 11 12
      * @param $userId int the id of the user we want to check
      * @return $count int number of challenges passed
      */
@@ -156,6 +156,19 @@ class SPODTUTORIAL_CLASS_Checker {
             }
         }
 
+        $dataletPosts = ODE_BOL_DataletPostDao::getInstance()->findAll();
+        foreach ($dataletPosts as $dataletPost) {
+            $datalet = ODE_BOL_Service::getInstance()->getDataletById($dataletPost->dataletId);
+            if($datalet->ownerId == $userId) {
+                $params = json_decode($datalet->params);
+                if($params->url) {
+                    if(SPODTUTORIAL_BOL_ProgressService::getInstance()->pass($userId,12)) {
+                        $count += 1;
+                        OW_Feedback::getInstance()->info('Challenge completed: '.OW_Language::getInstance()->text('spodtutorial','reuse_link_title'));
+                    }
+                }
+            }
+        }
         return $count;
     }
 
@@ -229,16 +242,16 @@ class SPODTUTORIAL_CLASS_Checker {
                     }
                     break;
                 }
-            }
-            $example = new OW_Example();
-            $example->andFieldEqual('roomId',$room->id);
-            $datasets = COCREATION_BOL_DatasetDao::getInstance()->findListByExample($example);
-            if(count($datasets) >= 1) {
-                if(SPODTUTORIAL_BOL_ProgressService::getInstance()->pass($userId,16)) {
-                    $count += 1;
-                    OW_Feedback::getInstance()->info('Challenge completed: '.OW_Language::getInstance()->text('spodtutorial','publish_title'));
+                $example = new OW_Example();
+                $example->andFieldEqual('roomId',$room->id);
+                $datasets = COCREATION_BOL_DatasetDao::getInstance()->findListByExample($example);
+                if(count($datasets) >= 1) {
+                    if(SPODTUTORIAL_BOL_ProgressService::getInstance()->pass($userId,16)) {
+                        $count += 1;
+                        OW_Feedback::getInstance()->info('Challenge completed: '.OW_Language::getInstance()->text('spodtutorial','publish_title'));
+                    }
+                    break;
                 }
-                break;
             }
         }
         return $count;
