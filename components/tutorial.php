@@ -129,10 +129,10 @@ SPODTUTORIAL.showFloatBox = function (id)
             $colors = array();
             foreach (json_decode($this->progress->assignedChallengesId) as $assignedChallengeId) {
                 if(in_array($assignedChallengeId,json_decode($this->progress->passedChallengesId))) {
-                    $colors[$assignedChallengeId] = "red";
+                    $colors[$assignedChallengeId] = "green";
                 }
                 else {
-                    $colors[$assignedChallengeId] = "green";
+                    $colors[$assignedChallengeId] = "red";
                 }
             }
             $this->assign('colors',$colors);
