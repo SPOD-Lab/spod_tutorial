@@ -31,7 +31,9 @@ class SPODTUTORIAL_CMP_InfoBox extends OW_Component
             case 7:
             case 8:
             case 9:
-                $helperComponentName = 'ODE_CMP_HelperWhatsNewEn';
+            case 17:
+            case 19:
+            $helperComponentName = 'ODE_CMP_HelperWhatsNewEn';
                 break;
             case 10:
                 $helperComponentName = 'SPODPUBLIC_CMP_HelperAgoraEn';
@@ -46,9 +48,7 @@ class SPODTUTORIAL_CMP_InfoBox extends OW_Component
                 $helperComponentName = 'COCREATION_CMP_HelperCocreationEn';
                 break;
             case 13:
-            case 17:
             case 18:
-            case 19:
                 $helperComponentName = '';
                 break;
             default:
