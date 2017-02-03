@@ -33,6 +33,7 @@ class SPODTUTORIAL_CLASS_Util
                 $temp[]=$remainedChallenge;
             }
         }
+
         return $temp;
     }
 

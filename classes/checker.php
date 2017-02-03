@@ -100,17 +100,22 @@ class SPODTUTORIAL_CLASS_Checker {
             $title = $card->{'title'};
             $comment = $card->{'comment'};
             foreach ($list as $datalet) {
+                if((strtotime($datalet->timestamp)-strtotime($privateDatalet->timestamp)) > 0) {
+                    if(SPODTUTORIAL_BOL_ProgressService::getInstance()->pass($userId,9)) {
+                        $count += 1;
+                        OW_Feedback::getInstance()->info('Challenge completed: '.OW_Language::getInstance()->text('spodtutorial','reuse_title'));
+                    }
+                }
+            }
+            $example=new OW_Example();
+            $example->andFieldNotEqual('ownerId',$userId);
+            $list = ODE_BOL_DataletDao::getInstance()->findListByExample($example);
+            foreach ($list as $datalet) {
                 $params = json_decode($datalet->params);
                 if($datalet->id != $id && $params->{'title'}==$title && $params->{'description'}==$comment) {
                     if(SPODTUTORIAL_BOL_ProgressService::getInstance()->pass($userId,8)) {
                         $count += 1;
                         OW_Feedback::getInstance()->info('Challenge completed: '.OW_Language::getInstance()->text('spodtutorial','copy_title'));
-                    }
-                    if((strtotime($datalet->timestamp)-strtotime($privateDatalet->timestamp)) > 0) {
-                        if(SPODTUTORIAL_BOL_ProgressService::getInstance()->pass($userId,9)) {
-                            $count += 1;
-                            OW_Feedback::getInstance()->info('Challenge completed: '.OW_Language::getInstance()->text('spodtutorial','reuse_title'));
-                        }
                     }
                 }
             }
