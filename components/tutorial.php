@@ -54,7 +54,7 @@ class SPODTUTORIAL_CMP_Tutorial extends  BASE_CLASS_Widget
                 $randChallengesKeyOfArray = array_rand($temp!=null?$temp:$this->challenges,2); //changing the integer value you can get more or less challenges
                 $randChallengesId = array();
                 foreach ($randChallengesKeyOfArray as $key) {
-                    $randChallengesId[] = $this->challenges[$key]->id;
+                    $randChallengesId[] = $temp[$key]->id;
                 }
                 $this->progress = $this->progressService->assign($this->userId,$randChallengesId);
                 OW::getFeedback()->info(OW::getLanguage()->text('spodtutorial','new_challenge'));
@@ -68,8 +68,9 @@ class SPODTUTORIAL_CMP_Tutorial extends  BASE_CLASS_Widget
                 $randChallengesKeyOfArray = array_rand($temp!=null?$temp:$this->challenges,2); //changing the integer value you can get more or less challenges
                 $randChallengesId = array();
                 foreach ($randChallengesKeyOfArray as $key) {
-                    $randChallengesId[] = $this->challenges[$key]->id;
+                    $randChallengesId[] = $temp[$key]->id;
                 }
+
                 $this->progress = $this->progressService->assign($this->userId,$randChallengesId);
                 OW::getFeedback()->info(OW::getLanguage()->text('spodtutorial','new_challenge'));
             }
