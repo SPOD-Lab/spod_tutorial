@@ -74,7 +74,15 @@ class SPODTUTORIAL_CMP_Tutorial extends  BASE_CLASS_Widget
                 $this->progress = $this->progressService->assign($this->userId,$randChallengesId);
                 OW::getFeedback()->info(OW::getLanguage()->text('spodtutorial','new_challenge'));
             }
-            $this->newPassed = SPODTUTORIAL_CLASS_Checker::getInstance()->checkChallenges($this->userId);
+
+            if(OW::getPluginManager()->isPluginActive('ode') &&
+                OW::getPluginManager()->isPluginActive('spodpublic') &&
+                OW::getPluginManager()->isPluginActive('spodpr') &&
+                OW::getPluginManager()->isPluginActive('cocreation') &&
+                OW::getPluginManager()->isPluginActive('newsfeed')
+            ){
+                $this->newPassed = SPODTUTORIAL_CLASS_Checker::getInstance()->checkChallenges($this->userId);
+            }
         }
 
         $this->progress = $this->progressService->findByUserId($this->userId);

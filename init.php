@@ -14,5 +14,6 @@ if(OW::getPluginManager()->isPluginActive('ode') &&
     OW::getPluginManager()->isPluginActive('spodpr') &&
     OW::getPluginManager()->isPluginActive('cocreation') &&
     OW::getPluginManager()->isPluginActive('newsfeed')
-)
-SPODTUTORIAL_BOL_ProgressService::getInstance()->initDb();
+){
+    SPODTUTORIAL_BOL_ProgressService::getInstance()->initDb();
+}
