@@ -83,3 +83,12 @@
 <paper-button raised class="custom {$colors[$challenge->id]}" onclick="SPODTUTORIAL.showFloatBox({$challenge->id});" alt><iron-icon icon="notification:event-available"></iron-icon>{text key=$prefix|cat:$challenge->title}</paper-button>
 {/foreach}
 {/if}
+
+<script>
+    var links = document.getElementsByTagName('a');
+    links.forEach(reloadPage);
+
+    function reloadPage() {
+        $().reloadWidget()
+    }
+</script>
